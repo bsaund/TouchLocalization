@@ -1,0 +1,10 @@
+Fine Localization using Touch:
+
+Given a model of a part an approximate transformation 
+
+Method 1, particle filters:
+
+
+Method 2, feature analysis:
+Assembly robots already use touch to localize to parts, however 
+
