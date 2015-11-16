@@ -1,10 +1,23 @@
 Fine Localization using Touch:
 
-Given a model of a part an approximate transformation 
+Given a model of a part with an approximately known location the goal is to use touch to precisely find the part location. 
 
-Method 1, particle filters:
+More formally, the following are given:
+A model of the part
+A probability distribution of transformations to the part
+An objective function to minimize (such as total time of all measurements)
+A desired tolerance and probability for that tolerance
+
+A touch measurement probes the part to add information but also accrues a cost. At each step a touch action is chosen and the transformation distribution is updated based on the information gained. The sequence ends when the transformation distribution is below some desired tolerance with a given high probability. The goal is to chose the sequence of touches that minimizes the expectation of the objective function. 
 
 
-Method 2, feature analysis:
-Assembly robots already use touch to localize to parts, however 
+Method 1, Particle Filters:
+A particle filter represents the true uncertainty in part location by a discrete set of possible part locations called particles drawn with probability according to the probability distribution of transformations. As measurements reduce the uncertainty unlikely particles are eliminated. The part can be considered sufficiently localized when the maximum distance between particles is below the desired tolerance (for example this will be the case if only a single particle has not been eliminated). 
 
+Globally choosing the optimal next touch action is computationally intractable as it requires evaluating the expectation of the effect of the proposed next touch action on every possible future action. Instead the touch action can be chosen to maximize information gain per cost. The chosen touch action will be the action with the highest number of expected particles to eliminate.  This is computationally feasible and is expected to yield a good sequence of touch actions.
+
+
+Method 2, Feature Analysis:
+Certain features on the part are particularly useful for localizing specific dimensions, yet a certain accuracy is needed before a feature can be reliable probed. For example a horizontal plane can be probed to vertical position, roll and pitch. A vertical hole can be probed to determine the horizontal positions. A second hole can be probed to determine yaw. However a hole cannot be probed unless the hole position is known well enough to place the probe in the hole at the correct depth.
+
+Each feature can be represented by a required accuracy in each dimension needed to probe the feature and the accuracy provided by probing that feature. When choosing each touch action only features with their required probing accuracy less than the current accuracy need to be considered, and as the transformation to the part becomes more certain more features can be probed. If the set of features is small enough all combinations can be searched exhaustively to determine the sequence that minimizes the objective. One challenge in this analysis is handling uncertainty with correlations between dimensions, as for example, rotations cause translational uncertainty for points not at the center of rotation.
