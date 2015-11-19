@@ -1,11 +1,11 @@
-function plot2Dpart(part)
+function plot2Dpart(part, varargin)
 
 hold on
 
 
 for i = 1:numel(part.edges)
     edge = part.edges{i};
-    plot(edge(:,1), edge(:,2), 'k');
+    plot(edge(:,1), edge(:,2), varargin{:});
 end
 
 % setAxes()
