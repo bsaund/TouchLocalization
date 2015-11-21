@@ -14,12 +14,14 @@ for i = 1:numFigs
     rp = transformPart(p, xerr(i), yerr(i), therr(i));
     plot2Dpart(rp,'r');
 end
-plot2Dpart(p,'k','LineWidth',3)
+% plot2Dpart(p,'k','LineWidth',3)
 axis off
 
 
 for i = -1:.25:1
-    plotProbe([i, .4], [0,-.5]);
+    for theta = 0
+        plotProbe([i, .4], .5*[sin(theta),-cos(theta)]);
+    end
 end
 
 for i = -.5:.25:.5
