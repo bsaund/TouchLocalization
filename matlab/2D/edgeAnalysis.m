@@ -8,9 +8,9 @@ for i = 1:numel(analysis.avg.edges)
     edgeAvg = analysis.avg.edges{i};
     
     %normal
-    v = edgeAvg(1,:) - edgeAvg(2,:);
-    v = v/norm(v);
-    normal = [v(2), -v(1)];
+    v = edgeAvg(2,:) - edgeAvg(1,:);
+%     v = v/norm(v);
+    normal = [-v(2), v(1)];
     normal = normal/norm(normal);
     analysis.avg.normals{i} = normal;
     
@@ -27,23 +27,40 @@ for i = 1:numel(analysis.avg.edges)
         offset = edge - edgeAvg;
         analysis.edgeOffset{i}.particle{j} = offset;
         
-        e =edge(1,:) - edge(2,:);
+        e =edge(2,:) - edge(1,:);
         
 %         alpha = - offset dot v / e dot v
         
         alpha = - (offset * v')  / (e*v');
         
-        
+        %Align offset 
         alignedOffset = offset +  alpha * e;
         analysis.alignedEdgeOffset{i}.particle{j} = alignedOffset;
         analysis.alignedEdge{i}.particle{j} = alignedOffset + edgeAvg;
         
         nDist = (normal * alignedOffset')'; 
+        
+        %normal dist from end of average edge to particle edge
         analysis.edgeNormalDist{i}.particle{j} = nDist;
         
+        %tangent distance from the end of the edge to the average edge, in
+        %a frame where the average edge is horizontal and scaled to length
+        %1        
+        analysis.edgeTanDist{i}.particle{j} = (offset * v')/ (norm(v)^2);
+        
+        %Slope of the edge, in a frame where the average edge is horizontal
+        %and scaled to length 1.
         analysis.edgeSlope{i}.particle{j} = nDist(2) - nDist(1);
 
     end
+    
+    %Bounds where all particles have an edge in the region, again the
+    %average edge is horizontal and scaled to length 1.
+    tDists = cell2mat(analysis.edgeTanDist{i}.particle)';
+    lb = max(tDists(:,1));
+    ub = 1 + min(tDists(:,2));
+    analysis.safeEdgeBounds{i} = [lb, ub];
+    
     
     b = cell2mat(analysis.edgeNormalDist{i}.particle);
     b = b(1,:)';
@@ -52,6 +69,8 @@ for i = 1:numel(analysis.avg.edges)
     
     analysis.maxEdgeDist{i} = @(t) max(m*t + b);
     analysis.minEdgeDist{i} = @(t) min(m*t + b);
+    
+    analysis.spread{i} = @(t) max(m*t+b) - min(m*t + b);
     
     
     
