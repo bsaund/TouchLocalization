@@ -14,7 +14,8 @@ therr = randn(n,1) * therr + center(3);
 particles = cell(n,1);
 
 for i = 1:n
-    particles{i} = transformPartAbout(p, xerr(i), yerr(i), therr(i), rPoint - [xerr(i), yerr(i)])
+    particles{i} = transformPartAbout(p, xerr(i), yerr(i), ...
+        therr(i), rPoint - [xerr(i), yerr(i)]);
 end
 
 

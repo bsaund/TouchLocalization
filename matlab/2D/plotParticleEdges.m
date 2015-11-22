@@ -1,4 +1,4 @@
-function plotEdges(particles, edgeIndex, varargin)
+function plotParticleEdges(particles, edgeIndex, varargin)
 
 for i = 1:numel(particles)
     part = particles{i};

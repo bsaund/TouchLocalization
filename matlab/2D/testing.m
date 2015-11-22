@@ -11,10 +11,14 @@ close all
 % 
 % axis equal
 
+edge = 2;
 
-particles = makePartParticles(0,.01,.05,[0,0,0], [1,0], 10);
-plotParticles(particles,'color',[.1,.1,.1, .1]);
-plotEdges(particles, 2, 'k')
+particles = makePartParticles(0.1,.05,.05,[0,0,.1], [.3,0], 10);
+plotParticles(particles,'color',[.2,.1,.1, .05]);
+plotParticleEdges(particles, edge, 'color', [.1,.1,.1,.3])
+
+analysis = edgeAnalysis(particles);
+plotAnalysis(analysis, edge, 'b', 'LineWidth',2)
 
 
 end
