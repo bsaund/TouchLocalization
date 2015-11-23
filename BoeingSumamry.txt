@@ -1,0 +1,45 @@
+Related Work:
+Tactile localization is a common method used to determine a transformation from a robot to a part. Through contact of a touch probe the robot observes faces of the part in the robot coordinate system. Sufficient probing leaves only a small range of possible part configurations consistent with the measurements, thus localizing the part. Tactile measurements are expensive as they require the robot to move and slowly contact the part. In addition the computation of the probability of a part configuration given the measurements may be very expensive. The two challenges of tactile localization are algorithmically choosing touch locations to maximize information gain, and determining a computationally efficient model for uncertainty.
+
+In manufacturing machines use tactile localization in a variety of conditions. Lower initial uncertainty and distinct easy to probe features vastly reduce the complexity of tactile localization. Perhaps the simplest scenario using automated tactile localization is automated probing by a linear axis machines of a block fixed in a vice. The fixturing inherently nearly eliminates rotational uncertainties, and with axis-aligned faces this leaves the linear uncertainties completely uncorrelated. Thus simply probing each face independently yields an accurate localization. 
+
+For parts with complicated geometry and no restrictions on the initial uncertainty touch localization requires modeling a probability of all 6DOF poses of the object, which is extremely computationally expensive. Updating the probability distribution based on a touch measurement is particularly difficult because it is not known which feature on the part was observed. Work in global touch localization has produce efficient methods for modeling the complex uncertainty, but it may take many measurements to locate a part [Petrovskaya].
+
+Fortunately many industrial workpieces exist in structured environments where the initial uncertainty is restricted either due to part fixturing or previous course localization. This restriction reduces the computational complexity of the model and simplifies updating part configuration probabilities based on a touch measurement.  This is because with low rotational uncertainty features much larger than the translational uncertainty can be probed without consideration of other features on the part. 
+
+However even with these restrictive assumptions it is important to choose the correct probability model. Inserting a peg into a hole on a known plane is a problem with these restrictions, as the peg can initially be used to probe the surface but the uncertainty is too large for the peg to probe the hole. For a probe on an arbitrary point there is not always a definite correspondence to one feature on the part, thus a measurement may result in a multimodal configuration probability. To model such uncertainty particle filters with a high particle density have been effectively used [Chatpar]. 
+
+The problem of determining which locations to touch can sometimes be avoided or solved with human intuition. If probing is cheap touch measurements can be made randomly and the uncertainty will decrease. For most large parts with few and small features in the reachable robot workspace, such as an airplane wing, a human can pre-program a touch sequence to reliably localize the part. A common sequence is probing three points to localize a plane on the part, then probing holes to localize the in-plane translation and rotation. While the is acceptable for high quantity production, the per part human effort is large for low rate automation.
+
+
+
+
+
+
+
+---------------------------- Particle Filter Stuff here-------------------------
+
+Selecting Touch Points:
+
+A touch measurement probes the part to add information but also accrues a cost. At each step a touch action is chosen, the measurement is made, and the transformation distribution is updated based on the information gained. The sequence ends when the transformation distribution is below some desired tolerance with a given high probability. The goal is to chose the sequence of touches that minimizes the expectation of the objective function. If the goal is to localize as quickly as possible the objective function will be the estimated measurement time.
+
+
+Choosing the true best measurement requires evaluating the effect of each possible measurement on the total expected objective. This requires examining the impact of a measurement on all future measurements and probability distributions, which is computationally intractable for even small numbers of possible measurements. By choosing the locally optimal measurement only the next step's uncertainty reduction is considered.
+
+Using a particle filter to model uncertainty, information gain can be approximated by the expected elimination of particles. For any measurement this can be easily computed by setting the simulated touch location as the most likely touch location given the current configuration distribution defined by the current particles. Using this simulated touch location the weights of each particles are updated and the unlikely particles that would be eliminated are counted.
+
+
+
+Feature Analysis:
+Selecting the locally optimal next measurement location is linear in computation time in the number of possible measurements. A measurement at each location can be simulated and the expected number of eliminated particles calculated. However for a tactile localization the number of possible touch locations is very large. By dividing the measurement space into a discrete grid the number of measurements can be greatly reduced, however in the case of a large part with only a few features any tractable grid size may eliminate the most effective measurements. Thus the ability to intelligently select measurement locations will improve the speed of localization.
+
+
+Certain features on the part are particularly useful for localizing specific dimensions, yet a certain accuracy is needed before a feature can be reliable probed. For example a horizontal plane can be probed to vertical position, roll and pitch. A vertical hole can be probed to determine the horizontal positions. A second hole can be probed to determine yaw. However a hole cannot be probed unless the hole position is known well enough to place the probe in the hole at the correct depth.
+
+Each feature can be represented by a required accuracy in each dimension needed to probe the feature and the accuracy provided by probing that feature. When choosing each touch action only features with their required probing accuracy less than the current accuracy need to be considered, and as the transformation to the part becomes more certain more features can be probed. Since there is likely a correlation between uncertainty in the probing direction and expected information gain, points with higher uncertainty normal to the feature should be considered first. If the set of features is small enough all measurements determined by this analysis can be simulated to determine the sequence that minimizes the objective. 
+
+
+
+
+
+
