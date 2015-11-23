@@ -1,0 +1,27 @@
+\begin{thebibliography}{1}
+
+\bibitem{Chhatpar2005}
+S.R. Chhatpar and M.S. Branicky.
+\newblock {Particle Filtering for Localization in Robotic Assemblies with
+  Position Uncertainty}.
+\newblock {\em 2005 IEEE/RSJ International Conference on Intelligent Robots and
+  Systems}, pages 2095--2102, 2005.
+
+\bibitem{Petrovskaya2011}
+Anna Petrovskaya and Oussama Khatib.
+\newblock {Global Localization of Objects via Touch}.
+\newblock {\em IEEE Transactions on Robotics}, 27(3):569--585, 2011.
+
+\bibitem{Xiong2004}
+Zhenhua Xiong, Michael~Yu Wang, Senior Member, and Zexiang Li.
+\newblock {A Near-Optimal Probing Strategy for Workpiece Localization}.
+\newblock 20(4):668--676, 2004.
+
+\bibitem{Yau1992}
+Hong-Tzong Yau and Chia-Hsiang Menq.
+\newblock {An automated dimensional inspection environment for manufactured
+  parts using coordinate measuring machines}.
+\newblock {\em International Journal of Production Research}, 30(7):1517--1536,
+  1992.
+
+\end{thebibliography}
