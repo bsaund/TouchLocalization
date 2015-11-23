@@ -11,12 +11,16 @@ close all
 % 
 % axis equal
 
-edge = 3;
+edge = 2;
 
-particles = makePartParticles(.1,0.0,0,[0,0,.1], [-.7,.1], 10);
-save('particles3','particles');
-% load('particles.mat')
+% particles = makePartParticles(.1,0.0,0.05,[0,0,.1], [-.7,.1], 10);
+% save('particles2','particles');
+load('particles.mat')
+figure()
+plotParticles(particles, 'k');
+axis off
 
+figure()
 plotParticles(particles,'color',[.2,.1,.1, .1]);
 plotParticleEdges(particles, edge, 'color', [.1,.1,.1,.4])
 
