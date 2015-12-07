@@ -49,15 +49,17 @@ for i = edges
     patch(p(:,1), p(:,2), [1,0,0], 'FaceAlpha', .2,'EdgeAlpha', 0)
     
     spreadF = analysis.spread{i};
-    spread = [];
-    for t = b(1):.001:b(2)
-        spread = [spread;
-            t, spreadF(t) + .1*(.25-(t-.5).^2)];
-    end
-    
-    [~,maxSpread] = max(spread(:,2));
-    t = spread(maxSpread,1);
-    plotProbe(start + t*v + normal * maxD(t) * 1.5, -normal * .5);
+%     spread = [];
+%     for t = b(1):.001:b(2)
+%         spread = [spread;
+%             t, spreadF(t) + .1*(.25-(t-.5).^2)];
+%     end
+%     
+%     [~,maxSpread] = max(spread(:,2));
+%     t = spread(maxSpread,1);
+%     plotProbe(start + t*v + normal * maxD(t) * 1.5, -normal * .5);
+    [probePoint, probeDir] = findProbePoint(spreadF, b, start, v, normal, maxD);
+    plotProbe(probePoint, probeDir);
     
 end
     

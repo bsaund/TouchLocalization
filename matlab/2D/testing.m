@@ -25,7 +25,9 @@ plotParticles(particles,'color',[.2,.1,.1, .1]);
 plotParticleEdges(particles, edge, 'color', [.1,.1,.1,.4])
 
 analysis = edgeAnalysis(particles);
+plotRobotRange();
 plotAnalysis(analysis, edge, 'b', 'LineWidth',2)
+
 
 
 end
