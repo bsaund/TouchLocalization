@@ -1,12 +1,12 @@
-directory = './data/topToFront/';
-files = dir(directory);
+directory = './data/noBlackDots/';
+files = dir(directory)
 
 % fig = figure();
 
 
 F = [];
 for imgNum = 1:size(files,1)-2
-    data =csvread(['./data/topToFront/', files(imgNum+2).name]);
+    data =csvread([directory, files(imgNum+2).name]);
     x = data(:,1);
     y = data(:,2);
     z = data(:,3);
@@ -27,9 +27,13 @@ for imgNum = 1:size(files,1)-2
 %     set(gca,'dataAspectRatio',[1 1 1])
 %     drawnow
 end
-
-
 F = F/max(max(max(F)));
+
+for i=1:size(F,3)
+    imwrite(F(:,:,i), [directory, 'IG', num2str(i), '.png']);
+end
+
+
 implay(F)
 % immovie(F)
 
